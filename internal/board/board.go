@@ -83,6 +83,28 @@ func switchTurn(current Color) Color {
 	return Red
 }
 
+func (board *Board) CheckWin() (bool, Color) {
+	// Check horizontal, vertical, and diagonal for a win
+	for r := range board.Grid {
+		for c := range board.Grid[r] {
+			if board.Grid[r][c].Color == Empty {
+				continue
+			}
+			color := board.Grid[r][c].Color
+			// Check horizontal
+			if c <= 3 && board.Grid[r][c+1].Color == color && board.Grid[r][c+2].Color == color && board.Grid[r][c+3].Color == color {
+				return true, color
+			}
+			// Check vertical
+			if r <= 2 && board.Grid[r+1][c].Color == color && board.Grid[r+2][c].Color == color && board.Grid[r+3][c].Color == color {
+				return true, color
+			}
+		}
+	}
+
+	return false, Empty
+}
+
 func (board *Board) DropPiece(col int) error {
 	if !board.CheckIfValidTurn(col) {
 		return fmt.Errorf("invalid move")
@@ -90,6 +112,14 @@ func (board *Board) DropPiece(col int) error {
 	for r := len(board.Grid) - 1; r >= 0; r-- {
 		if board.Grid[r][col].Color == Empty {
 			board.Grid[r][col].Color = board.Turn
+			win, winner := board.CheckWin()
+			if win {
+				board.DrawBoard()
+				fmt.Printf("%s wins!\n", board.GetColorString(winner))
+				// Reset the board for a new game
+				*board = *NewBoard()
+				return nil
+			}
 			board.Turn = switchTurn(board.Turn)
 			return nil
 		}
