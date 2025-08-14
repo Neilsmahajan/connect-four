@@ -99,6 +99,14 @@ func (board *Board) CheckWin() (bool, Color) {
 			if r <= 2 && board.Grid[r+1][c].Color == color && board.Grid[r+2][c].Color == color && board.Grid[r+3][c].Color == color {
 				return true, color
 			}
+			// Check diagonal (left to right)
+			if r <= 2 && c <= 3 && board.Grid[r+1][c+1].Color == color && board.Grid[r+2][c+2].Color == color && board.Grid[r+3][c+3].Color == color {
+				return true, color
+			}
+			// Check diagonal (right to left)
+			if r <= 2 && c >= 3 && board.Grid[r+1][c-1].Color == color && board.Grid[r+2][c-2].Color == color && board.Grid[r+3][c-3].Color == color {
+				return true, color
+			}
 		}
 	}
 
