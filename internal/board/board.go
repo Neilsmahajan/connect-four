@@ -34,22 +34,22 @@ func NewBoard() *Board {
 }
 
 func (board *Board) DrawBoard() {
-	result := "\n  A   B   C   D   E   F   G"
+	result := "\n  A    B    C    D    E    F    G"
 	for r := range board.Grid {
-		result += "\n+---+---+---+---+---+---+---+\n"
+		result += "\n+----+----+----+----+----+----+----+\n"
 		result += "|"
 		for c := range board.Grid[r] {
 			switch board.Grid[r][c].Color {
 			case Red:
-				result += " R |"
+				result += " 🔴 |"
 			case Yellow:
-				result += " Y |"
+				result += " 🟡 |"
 			case Empty:
-				result += "   |"
+				result += "    |"
 			}
 		}
 	}
-	result += "\n+---+---+---+---+---+---+---+\n"
+	result += "\n+----+----+----+----+----+----+----+\n"
 	fmt.Println(result)
 }
 
