@@ -7,6 +7,5 @@ import (
 
 func main() {
 	board := board.NewBoard()
-	println(board.DrawBoard())
-	cli.Run()
+	cli.Run(board)
 }

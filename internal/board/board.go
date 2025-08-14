@@ -1,5 +1,7 @@
 package board
 
+import "fmt"
+
 type Color int
 
 const (
@@ -31,7 +33,7 @@ func NewBoard() *Board {
 	return board
 }
 
-func (board *Board) DrawBoard() string {
+func (board *Board) DrawBoard() {
 	result := "\n  A   B   C   D   E   F   G"
 	for r := range board.Grid {
 		result += "\n+---+---+---+---+---+---+---+\n"
@@ -48,5 +50,5 @@ func (board *Board) DrawBoard() string {
 		}
 	}
 	result += "\n+---+---+---+---+---+---+---+\n"
-	return result
+	fmt.Println(result)
 }
