@@ -52,3 +52,47 @@ func (board *Board) DrawBoard() {
 	result += "\n+---+---+---+---+---+---+---+\n"
 	fmt.Println(result)
 }
+
+func (board *Board) CheckIfValidTurn(col int) bool {
+	if col < 0 || col >= 7 {
+		return false
+	}
+	if board.Grid[0][col].Color != Empty {
+		return false
+	}
+	return true
+}
+
+func (board *Board) GetColorString(color Color) string {
+	switch color {
+	case Red:
+		return "Red"
+	case Yellow:
+		return "Yellow"
+	case Empty:
+		return "Empty"
+	default:
+		return "Unknown"
+	}
+}
+
+func switchTurn(current Color) Color {
+	if current == Red {
+		return Yellow
+	}
+	return Red
+}
+
+func (board *Board) DropPiece(col int) error {
+	if !board.CheckIfValidTurn(col) {
+		return fmt.Errorf("invalid move")
+	}
+	for r := len(board.Grid) - 1; r >= 0; r-- {
+		if board.Grid[r][col].Color == Empty {
+			board.Grid[r][col].Color = board.Turn
+			board.Turn = switchTurn(board.Turn)
+			return nil
+		}
+	}
+	return fmt.Errorf("column is full")
+}

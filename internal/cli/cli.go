@@ -13,7 +13,7 @@ func Run(board *board.Board) {
 		scanner := bufio.NewScanner(os.Stdin)
 		fmt.Println("Connect Four CLI")
 		fmt.Println("Input A-G to drop a piece in that column, or Q to quit:")
-		fmt.Printf("It's %s's turn.\n", getColorString(board.Turn))
+		fmt.Printf("It's %s's turn.\n", board.GetColorString(board.Turn))
 		board.DrawBoard()
 		for scanner.Scan() {
 
@@ -22,32 +22,20 @@ func Run(board *board.Board) {
 				fmt.Println("Quitting the game.")
 				return
 			}
-			if input >= "A" && input <= "G" || input >= "a" && input <= "g" {
+			if input >= "A" && input <= "G" {
 				fmt.Printf("You selected column %s\n", input)
-				// Here you would typically call a function to handle the game logic
+				col := int(input[0] - 'A')
+				board.DropPiece(col)
 			} else {
 				fmt.Println("Invalid input. Please enter a column (A-G) or Q to quit.")
 			}
 			fmt.Println("Input A-G to drop a piece in that column, or Q to quit:")
-			fmt.Printf("It's %s's turn.\n", getColorString(board.Turn))
+			fmt.Printf("It's %s's turn.\n", board.GetColorString(board.Turn))
 			board.DrawBoard()
 		}
 		if err := scanner.Err(); err != nil {
 			fmt.Fprintln(os.Stderr, "Error reading input:", err)
 			return
 		}
-	}
-}
-
-func getColorString(color board.Color) string {
-	switch color {
-	case board.Red:
-		return "Red"
-	case board.Yellow:
-		return "Yellow"
-	case board.Empty:
-		return "Empty"
-	default:
-		return "Unknown"
 	}
 }
